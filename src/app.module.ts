@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
+import { linkShorteningModule } from './link-shortening/link-shortening.module';
 
 @Module({
-  imports: [],
+  imports: [linkShorteningModule],
 })
 export class AppModule {}

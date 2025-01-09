@@ -5,7 +5,7 @@ export class LinkShorteningController {
   constructor(private LinkShorteningService: LinkShorteningService) {}
 
   @Post('')
-  public create(@Body('link') link: string): string {
-    return this.LinkShorteningService.getNewLink(link);
+  public create(@Body('originalURL') originalURL: string): string {
+    return this.LinkShorteningService.getNewLink(originalURL);
   }
 }

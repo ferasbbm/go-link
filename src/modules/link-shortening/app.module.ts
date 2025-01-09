@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { linkShorteningModule } from './link-shortening/link-shortening.module';
+import { linkShorteningModule } from './link-shortening.module';
 
 @Module({
   imports: [linkShorteningModule],

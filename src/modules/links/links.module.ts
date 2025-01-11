@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { LinkShorteningController } from './links.controller';
-import { LinkShorteningService } from './providers/links.service';
-
+import { LinkController } from './links.controller';
+import { LinkService } from './providers/links.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Link } from './entities/link.entity';
 @Module({
-  controllers: [LinkShorteningController],
-  providers: [LinkShorteningService],
+  imports: [TypeOrmModule.forFeature([Link])],
+  controllers: [LinkController],
+  providers: [LinkService],
 })
-export class linkShorteningModule {}
+export class LinksModule {}

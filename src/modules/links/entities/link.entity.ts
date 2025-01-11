@@ -14,19 +14,19 @@ export class Link {
   @Column()
   originalUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   customUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   shortUrl: string;
 
   @Column()
   hashedPassword: string;
 
-  @Column('number')
+  @Column()
   clickCount: number;
 
-  @Column('number')
+  @Column()
   maxClicks: number;
 
   @Column('timestamp')

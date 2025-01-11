@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LinkShorteningController } from './link-shortening.controller';
-import { LinkShorteningService } from './link-shortening.service';
+import { LinkShorteningService } from './providers/link-shortening.service';
 
 @Module({
   controllers: [LinkShorteningController],

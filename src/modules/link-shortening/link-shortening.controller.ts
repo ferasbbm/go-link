@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { LinkShorteningService } from './link-shortening.service';
+import { LinkShorteningService } from './providers/link-shortening.service';
 @Controller('api/link-shortening')
 export class LinkShorteningController {
   constructor(private LinkShorteningService: LinkShorteningService) {}

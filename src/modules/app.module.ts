@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LinksModule } from './links/links.module';
 import { UserModule } from './users/users.module';
+import { ConfigurationModule } from 'src/config/config.module';
 
 @Module({
   imports: [
+    ConfigurationModule,
     LinksModule,
     UserModule,
     TypeOrmModule.forRoot({

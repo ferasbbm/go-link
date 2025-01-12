@@ -1,4 +1,4 @@
-type DatabaseType = 'mysql' | 'postgres';
+import { DatabaseType } from 'src/common/types/global.type';
 
 export const databaseConfig = () => ({
   type: process.env.DB_TYPE as DatabaseType,

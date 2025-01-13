@@ -12,7 +12,7 @@ export class Link {
   id: number;
 
   @Column()
-  originalUrl: string;
+  originalURL: string;
 
   @Column({ nullable: true })
   customUrl: string;
@@ -20,16 +20,16 @@ export class Link {
   @Column({ nullable: true })
   shortUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   hashedPassword: string;
 
-  @Column()
+  @Column({ default: 0 })
   clicksCount: number;
 
-  @Column()
+  @Column({ default: 0 })
   maxClicks: number;
 
-  @Column('timestamp')
+  @Column('timestamp', { nullable: true })
   expirationDate: Date;
 
   userId: number;

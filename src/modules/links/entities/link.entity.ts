@@ -24,13 +24,15 @@ export class Link {
   hashedPassword: string;
 
   @Column()
-  clickCount: number;
+  clicksCount: number;
 
   @Column()
   maxClicks: number;
 
   @Column('timestamp')
   expirationDate: Date;
+
+  userId: number;
 
   @CreateDateColumn()
   createdAt: Date;

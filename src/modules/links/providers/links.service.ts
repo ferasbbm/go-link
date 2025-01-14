@@ -8,7 +8,7 @@ import { LinkTransformer } from '../transformers/link.transformer';
 import { generateShortUrl } from '../utils/short-url.generator';
 
 @Injectable()
-export class LinkService {
+export class LinksService {
   constructor(
     @InjectRepository(Link) private readonly linkRepo: Repository<Link>,
   ) {}

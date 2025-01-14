@@ -1,4 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { LinkService } from './providers/links.service';
 import { CrateLinkDto } from './dtos/create-link.dto';
 import { LinkInterface } from './interfaces/link.interface';
@@ -7,7 +14,13 @@ export class LinkController {
   constructor(private LinkService: LinkService) {}
 
   @Post('')
-  public create(@Body() crateLinkDto: CrateLinkDto): Promise<LinkInterface> {
+  create(@Body() crateLinkDto: CrateLinkDto): Promise<LinkInterface> {
     return this.LinkService.getNewLink(crateLinkDto);
+  }
+
+  @Get(':id')
+  show(@Param('id', new ParseIntPipe()) id: number) {
+    const link = this.LinkService.findOne(id);
+    return link;
   }
 }

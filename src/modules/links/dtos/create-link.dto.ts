@@ -1,6 +1,6 @@
 import { IsDate, IsOptional, IsNotEmpty, IsString, Min } from 'class-validator';
 
-export class CrateLinkDto {
+export class CreateLinkDto {
   @IsString()
   @IsNotEmpty()
   originalURL: string;

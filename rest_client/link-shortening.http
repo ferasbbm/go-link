@@ -1,4 +1,4 @@
-### POST  create new  link
+### POST  create new link
 POST   http://localhost:3000/api/link-shortening
 content-type: application/json
 
@@ -9,3 +9,12 @@ content-type: application/json
 ### GET
 GET   http://localhost:3000/api/link-shortening/1
 content-type: application/json
+
+
+### PUT  update existing link
+PUT   http://localhost:3000/api/link-shortening/1
+content-type: application/json
+
+{
+    "originalURL": "https://www.22.com"
+}

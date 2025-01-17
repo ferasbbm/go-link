@@ -2,10 +2,11 @@ import { LinkInterface } from './../interfaces/link.interface';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Link } from '../entities/link.entity';
 import { Repository } from 'typeorm';
-import { CrateLinkDto } from '../dtos/create-link.dto';
+import { CreateLinkDto } from '../dtos/create-link.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LinkTransformer } from '../transformers/link.transformer';
 import { generateShortUrl } from '../utils/short-url.generator';
+import { UpdateLinkDto } from '../dtos/update-link.dto';
 
 @Injectable()
 export class LinksService {
@@ -14,11 +15,11 @@ export class LinksService {
   ) {}
 
   /**
-   * This fun for generate new link
+   * Fun for generate new link
    * @param dto
-   * @returns Link obj
+   * @returns Link obj from db
    */
-  async getNewLink(dto: CrateLinkDto): Promise<LinkInterface> {
+  async getNewLink(dto: CreateLinkDto): Promise<LinkInterface> {
     const shortUrlFragment = await generateShortUrl();
     const createdLink = this.linkRepo.create({
       ...dto,
@@ -39,5 +40,14 @@ export class LinksService {
     if (!link) throw new NotFoundException();
 
     return LinkTransformer.make(link);
+  }
+
+  async update(id: number, dto: UpdateLinkDto): Promise<LinkInterface> {
+    const link = await this.findOne(id);
+
+    Object.assign(link, dto);
+    const updatedLink = await this.linkRepo.save(link);
+
+    return LinkTransformer.make(updatedLink);
   }
 }

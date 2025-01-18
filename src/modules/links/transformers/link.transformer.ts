@@ -14,7 +14,7 @@ export class LinkTransformer {
       shortUrl: link.shortUrl,
       customUrl: link.customUrl,
       clicksCount: link.clicksCount,
-      userId: link.userId,
+      userId: link.user,
     };
   }
 

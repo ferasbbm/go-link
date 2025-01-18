@@ -1,9 +1,12 @@
+import { Link } from 'src/modules/links/entities/link.entity';
 import {
   Column,
   Entity,
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('users')
@@ -22,6 +25,10 @@ export class User {
 
   @Column()
   hashedPassword: string;
+
+  @OneToMany(() => Link, (link) => link.user)
+  @JoinColumn()
+  links: Link[];
 
   @CreateDateColumn()
   createdAt: Date;

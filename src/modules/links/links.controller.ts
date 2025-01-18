@@ -4,9 +4,10 @@ import {
   Get,
   Param,
   Post,
-  Put,
   HttpStatus,
   HttpCode,
+  Delete,
+  Patch,
 } from '@nestjs/common';
 import { LinksService } from './providers/links.service';
 import { CreateLinkDto } from './dtos/create-link.dto';
@@ -16,21 +17,30 @@ import { UpdateLinkDto } from './dtos/update-link.dto';
 export class LinksController {
   constructor(private LinkService: LinksService) {}
 
-  @Post('')
+  @Post()
   create(@Body() crateLinkDto: CreateLinkDto): Promise<LinkInterface> {
     return this.LinkService.generateNewLink(crateLinkDto);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: number) {
-    const link = this.LinkService.findOne(id);
+  findOne(@Param('id') id: number): Promise<LinkInterface> {
+    const link = this.LinkService.getLinkById(id);
     return link;
   }
 
   @HttpCode(HttpStatus.OK)
-  @Put(':id')
-  async update(@Param('id') id: number, @Body() updateLinkDto: UpdateLinkDto) {
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() updateLinkDto: UpdateLinkDto,
+  ): Promise<LinkInterface> {
     return this.LinkService.update(id, updateLinkDto);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
+    return this.LinkService.delete(id);
   }
 }

@@ -12,7 +12,7 @@ content-type: application/json
 
 
 ### PUT  update existing link
-PUT   http://localhost:3000/api/link-shortening/200
+PUT   http://localhost:3000/api/link-shortening/1
 content-type: application/json
 
 {

@@ -19,7 +19,7 @@ export class LinksService {
    * @param dto
    * @returns Link obj from db
    */
-  async getNewLink(dto: CreateLinkDto): Promise<LinkInterface> {
+  async generateNewLink(dto: CreateLinkDto): Promise<LinkInterface> {
     const shortUrlFragment = await generateShortUrl();
     const createdLink = this.linkRepo.create({
       ...dto,
@@ -42,6 +42,12 @@ export class LinksService {
     return LinkTransformer.make(link);
   }
 
+  /**
+   *
+   * @param id of link
+   * @param dto  link params
+   * @returns updated link from db
+   */
   async update(id: number, dto: UpdateLinkDto): Promise<LinkInterface> {
     const link = await this.findOne(id);
 

@@ -18,12 +18,12 @@ export class LinksController {
 
   @Post('')
   create(@Body() crateLinkDto: CreateLinkDto): Promise<LinkInterface> {
-    return this.LinkService.getNewLink(crateLinkDto);
+    return this.LinkService.generateNewLink(crateLinkDto);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  show(@Param('id') id: number) {
+  findOne(@Param('id') id: number) {
     const link = this.LinkService.findOne(id);
     return link;
   }

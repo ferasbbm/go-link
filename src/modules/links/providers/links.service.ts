@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LinkTransformer } from '../transformers/link.transformer';
 import { generateShortUrl } from '../utils/short-url.generator';
 import { UpdateLinkDto } from '../dtos/update-link.dto';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @Injectable()
 export class LinksService {
@@ -62,6 +63,17 @@ export class LinksService {
   async delete(id: number): Promise<void> {
     const link = await this.findOne(id);
     await this.linkRepo.remove(link);
+  }
+
+  /**
+   * Retrieves a link by user id.
+   * @param user - The ID of the user to retrieve links.
+   * @returns The link as array of LinkInterface.
+   */
+  async getLinksByUserId(user: User): Promise<LinkInterface[]> {
+    const links: Link[] = await this.linkRepo.find({ where: { user } });
+
+    return LinkTransformer.collection(links);
   }
 
   /**

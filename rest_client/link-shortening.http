@@ -1,4 +1,5 @@
-### POST  create new link
+############## POST  create new link ##############
+
 POST   http://localhost:3000/api/link-shortening
 content-type: application/json
 
@@ -6,19 +7,19 @@ content-type: application/json
     "originalURL": "https://www.example.com"
 }
 
-### GET
-GET   http://localhost:3000/api/link-shortening/10
+############## GET ##############
+GET   http://localhost:3000/api/link-shortening/11
 content-type: application/json
 
 
-### PUT  update existing link
-PATCH    http://localhost:3000/api/link-shortening/10
+############## PUT  update existing link ##############
+PATCH    http://localhost:3000/api/link-shortening/11
 content-type: application/json
 
 {
     "originalURL": "https://www.10101.com"
 }
 
-### DELETE delete link using id 
-DELETE    http://localhost:3000/api/link-shortening/10
+############## DELETE delete link using id  ##############
+DELETE    http://localhost:3000/api/link-shortening/11
 content-type: application/json

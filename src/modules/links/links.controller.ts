@@ -25,22 +25,21 @@ export class LinksController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: number): Promise<LinkInterface> {
-    const link = this.LinkService.getLinkById(id);
-    return link;
+    return this.LinkService.getLinkById(id);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async update(
+  @HttpCode(HttpStatus.OK)
+  update(
     @Param('id') id: number,
     @Body() updateLinkDto: UpdateLinkDto,
   ): Promise<LinkInterface> {
     return this.LinkService.update(id, updateLinkDto);
   }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async delete(@Param('id') id: number) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('id') id: number) {
     return this.LinkService.delete(id);
   }
 }

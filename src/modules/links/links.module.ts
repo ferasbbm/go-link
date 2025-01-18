@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Link } from './entities/link.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Link])],
+  exports: [LinksService],
   controllers: [LinksController],
   providers: [LinksService],
 })

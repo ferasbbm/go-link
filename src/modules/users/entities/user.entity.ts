@@ -7,12 +7,17 @@ import {
   UpdateDateColumn,
   JoinColumn,
   OneToMany,
+  Unique,
 } from 'typeorm';
 
 @Entity('users')
+@Unique(['username', 'email', 'mobile'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ nullable: true })
+  name: string;
 
   @Column()
   username: string;

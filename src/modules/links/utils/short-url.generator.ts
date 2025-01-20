@@ -1,5 +1,5 @@
 import * as randomstring from 'randomstring';
-import { numberOfNewGeneratedUrlChars } from 'src/common/types/constants/app.constants';
+import { numberOfNewGeneratedUrlChars } from 'src/common/constants/app.constants';
 
 export const generateShortUrl = async (
   length: number = numberOfNewGeneratedUrlChars,

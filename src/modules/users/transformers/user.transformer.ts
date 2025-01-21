@@ -1,7 +1,7 @@
 import { User } from '../entities/user.entity';
 import { UserInterface } from '../interfaces/user.interface';
 
-export class LinkTransformer {
+export class UserTransformer {
   /**
    *
    * @param link

@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { LinksService } from 'src/modules/links/providers/links.service';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +11,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LoginDto } from '../dtos/login.dto';
 import { AuthProvider } from './auth.provider';
 import { RegisterDto } from '../dtos/register.dto';
+import { identifyType } from '../utils/identifier.util';
+import { IdentifyType } from 'src/common/enums/app.enums';
 
 @Injectable({})
 export class UsersService {
@@ -31,5 +38,30 @@ export class UsersService {
     return userLinks;
   }
 
-  // findByIdentifier(identifier: string) {}
+  async findByIdentifier(identifier: string): Promise<User> {
+    const type: IdentifyType = identifyType(identifier);
+
+    let user: User | null = null;
+
+    switch (type) {
+      case 'email':
+        user = await this.userRepo.findOne({ where: { email: identifier } });
+        break;
+      case 'mobile':
+        user = await this.userRepo.findOne({ where: { mobile: identifier } });
+        break;
+      case 'username':
+        user = await this.userRepo.findOne({ where: { username: identifier } });
+        break;
+      default:
+        throw new NotFoundException('Invalid identifier type');
+    }
+
+    if (!user)
+      throw new NotFoundException(
+        `User not found with identifier: ${identifier}`,
+      );
+
+    return user;
+  }
 }

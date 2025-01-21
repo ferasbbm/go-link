@@ -10,38 +10,50 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { RegisterDto } from '../dtos/register.dto';
-import { makeHash } from '../utils/hash.generate';
-import { generateToken } from '../utils/jwt.helper';
+import { checkHash, makeHash } from '../utils/hash.util';
+import { generateToken } from '../utils/jwt.util';
+import { UserTransformer } from '../transformers/user.transformer';
+import { UserInterface } from '../interfaces/user.interface';
 
 @Injectable({})
 export class AuthProvider {
   constructor(
     private jwtService: JwtService,
-    @Inject(forwardRef(() => UsersService)) // Use forwardRef here
+    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {}
 
-  async signup(registerDto: RegisterDto) {
+  async signup(registerDto: RegisterDto): Promise<UserInterface> {
     const hashedPassword: string = await makeHash(registerDto.password);
 
-    const user: User = this.userRepo.create({ ...registerDto, hashedPassword });
-    const createdUser = await this.userRepo.save(user);
+    const userObj: User = this.userRepo.create({
+      ...registerDto,
+      hashedPassword,
+    });
+    const user: User = await this.userRepo.save(userObj);
 
-    const token = await generateToken(this.jwtService, {
+    const token: string = await generateToken(this.jwtService, {
       userId: user.id,
       username: user.username,
     });
-    return token;
+
+    return UserTransformer.make(user, token);
   }
 
-  async signin(username: string, pass: string) {
-    // const user = await this.usersService.findOne(username);
-    if (pass !== 'pass') throw new UnauthorizedException();
+  async signin(username: string, pass: string): Promise<UserInterface> {
+    const user = await this.usersService.findByIdentifier(username);
 
-    const payload = { sub: 1, username };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    const isPasswordValid = await checkHash(pass, user.hashedPassword);
+
+    if (!isPasswordValid)
+      throw new UnauthorizedException('password not correct!');
+
+    const token: string = await generateToken(this.jwtService, {
+      userId: user.id,
+      username: user.username,
+    });
+
+    return UserTransformer.make(user, token);
   }
 }

@@ -5,6 +5,7 @@
 - [ ] Implement soft delete functionality
 - [ ] Add unit tests for soft delete
 - [ ] Integrate CI/CD pipeline
+- [ ] Make command to list all routes
 
 ## Testing
 

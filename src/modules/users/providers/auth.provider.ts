@@ -32,7 +32,7 @@ export class AuthProvider {
       userId: user.id,
       username: user.username,
     });
-    return createdUser;
+    return token;
   }
 
   async signin(username: string, pass: string) {

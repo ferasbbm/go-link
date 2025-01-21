@@ -5,10 +5,10 @@ import { UserController } from './users.controller';
 import { UsersService } from './providers/users.service';
 import { LinksModule } from '../links/links.module';
 import { AuthProvider } from './providers/auth.provider';
-import { JwtModule } from '@nestjs/jwt';
+import { jwtConfig } from 'src/config/jwt.config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), LinksModule, JwtModule],
+  imports: [TypeOrmModule.forFeature([User]), LinksModule, jwtConfig()],
   controllers: [UserController],
   providers: [UsersService, AuthProvider],
   exports: [],

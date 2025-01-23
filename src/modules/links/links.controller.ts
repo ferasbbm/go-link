@@ -13,7 +13,7 @@ import { LinksService } from './providers/links.service';
 import { CreateLinkDto } from './dtos/create-link.dto';
 import { LinkInterface } from './interfaces/link.interface';
 import { UpdateLinkDto } from './dtos/update-link.dto';
-@Controller('api/link-shortening')
+@Controller('link-shortening')
 export class LinksController {
   constructor(private LinkService: LinksService) {}
 
@@ -41,5 +41,11 @@ export class LinksController {
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id') id: number) {
     return this.LinkService.delete(id);
+  }
+
+  @Get('my-link')
+  @HttpCode(HttpStatus.OK)
+  async listMyLinks() {
+    return this.LinkService.getLinksByUserId(1);
   }
 }

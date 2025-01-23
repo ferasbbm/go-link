@@ -1,41 +1,28 @@
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { LinksService } from 'src/modules/links/providers/links.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginDto } from '../dtos/login.dto';
-import { AuthProvider } from './auth.provider';
-import { RegisterDto } from '../dtos/register.dto';
-import { identifyType } from '../utils/identifier.util';
+import { identifyType } from '../../auth/utils/identifier.util';
 import { IdentifyType } from 'src/common/enums/app.enums';
 
 @Injectable({})
 export class UsersService {
   constructor(
-    private readonly linkService: LinksService,
-    @Inject(forwardRef(() => AuthProvider)) // Use forwardRef here
-    private authProvider: AuthProvider,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {}
 
-  login(dto: LoginDto) {
-    return this.authProvider.signin(dto.username, dto.password);
-  }
+  // async getMyLinks(userId: number) {
+  //   const authUser: User = await this.userRepo.findOneBy({ id: userId });
+  //   const userLinks = await this.linkService.getLinksByUserId(authUser);
 
-  register(registerDto: RegisterDto) {
-    return this.authProvider.signup(registerDto);
-  }
+  //   return userLinks;
+  // }
 
-  async getMyLinks(userId: number) {
-    const authUser: User = await this.userRepo.findOneBy({ id: userId });
-    const userLinks = await this.linkService.getLinksByUserId(authUser);
+  async create(data: object): Promise<User> {
+    const userObj: User = this.userRepo.create(data);
+    const user: User = await this.userRepo.save(userObj);
 
-    return userLinks;
+    return user;
   }
 
   async findByIdentifier(identifier: string): Promise<User> {

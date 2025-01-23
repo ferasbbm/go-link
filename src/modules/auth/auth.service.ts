@@ -1,37 +1,29 @@
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from './users.service';
-import { RegisterDto } from '../dtos/register.dto';
-import { checkHash, makeHash } from '../utils/hash.util';
-import { generateToken } from '../utils/jwt.util';
-import { UserTransformer } from '../transformers/user.transformer';
-import { UserInterface } from '../interfaces/user.interface';
+import { UsersService } from '../users/providers/users.service';
+import { UserInterface } from '../users/interfaces/user.interface';
+import { User } from '../users/entities/user.entity';
+import { checkHash, makeHash } from './utils/hash.util';
+import { generateToken } from './utils/jwt.util';
+import { UserTransformer } from '../users/transformers/user.transformer';
+import { RegisterDto } from './dtos/register.dto';
 
 @Injectable({})
-export class AuthProvider {
+export class AuthService {
   constructor(
     private jwtService: JwtService,
-    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {}
 
-  async signup(registerDto: RegisterDto): Promise<UserInterface> {
+  async register(registerDto: RegisterDto): Promise<UserInterface> {
     const hashedPassword: string = await makeHash(registerDto.password);
 
-    const userObj: User = this.userRepo.create({
+    const user = await this.usersService.create({
       ...registerDto,
       hashedPassword,
     });
-    const user: User = await this.userRepo.save(userObj);
 
     const token: string = await generateToken(this.jwtService, {
       userId: user.id,
@@ -41,7 +33,7 @@ export class AuthProvider {
     return UserTransformer.make(user, token);
   }
 
-  async signin(username: string, pass: string): Promise<UserInterface> {
+  async login(username: string, pass: string): Promise<UserInterface> {
     const user = await this.usersService.findByIdentifier(username);
 
     const isPasswordValid = await checkHash(pass, user.hashedPassword);

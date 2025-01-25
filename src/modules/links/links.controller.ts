@@ -43,9 +43,9 @@ export class LinksController {
     return this.LinkService.delete(id);
   }
 
-  @Get('my-link')
-  @HttpCode(HttpStatus.OK)
-  async listMyLinks() {
-    return this.LinkService.getLinksByUserId(1);
-  }
+  // @Get('my-link')
+  // @HttpCode(HttpStatus.OK)
+  // async listMyLinks() {
+  //   return this.LinkService.getLinksByUserId({});
+  // }
 }

@@ -1,10 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/providers/users.service';
 import { UserInterface } from '../users/interfaces/user.interface';
-import { User } from '../users/entities/user.entity';
 import { checkHash, makeHash } from './utils/hash.util';
 import { generateToken } from './utils/jwt.util';
 import { UserTransformer } from '../users/transformers/user.transformer';
@@ -36,7 +33,7 @@ export class AuthService {
   async login(username: string, pass: string): Promise<UserInterface> {
     const user = await this.usersService.findByIdentifier(username);
 
-    const isPasswordValid = await checkHash(pass, user.hashedPassword);
+    const isPasswordValid: boolean = await checkHash(pass, user.hashedPassword);
 
     if (!isPasswordValid)
       throw new UnauthorizedException('password not correct!');
@@ -47,5 +44,9 @@ export class AuthService {
     });
 
     return UserTransformer.make(user, token);
+  }
+
+  async logout(): Promise<void> {
+    return;
   }
 }

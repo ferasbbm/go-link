@@ -6,6 +6,8 @@ import { checkHash, makeHash } from './utils/hash.util';
 import { generateToken } from './utils/jwt.util';
 import { UserTransformer } from '../users/transformers/user.transformer';
 import { RegisterDto } from './dtos/register.dto';
+import { TokenPayload } from 'src/common/types/global.type';
+import { User } from '../users/entities/user.entity';
 
 @Injectable({})
 export class AuthService {
@@ -46,7 +48,7 @@ export class AuthService {
     return UserTransformer.make(user, token);
   }
 
-  async logout(): Promise<void> {
-    return;
+  async logout(user: User) {
+    return user;
   }
 }

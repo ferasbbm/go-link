@@ -17,8 +17,8 @@ content-type: application/json
     "password":"password"
 }   
 
-### Profile Request
+### Logout Request
 POST   http://localhost:3000/api/auth/logout
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMwLCJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM4NzYwNTk4LCJleHAiOjE3Mzg3NjQxOTh9.TLcXF54Dn5vhOpPKhy8S9HAj-5fpyWyt47JtBYKlyaY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMxLCJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM4ODM5MzQ5LCJleHAiOjE3Mzg4NDI5NDl9.Uqm0AwaWCq2UP8niL1zs7cXWWTsgAEKypU_CFaDRWPg
 

@@ -14,7 +14,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from 'src/common/utils/api-response.util';
 import { UserInterface } from '../users/interfaces/user.interface';
 import { IApiResponse } from 'src/common/interfaces/api-response.interface';
-
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -50,8 +49,28 @@ export class AuthController {
   }
 
   @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))
-  logout(@Req() req) {
-    return this.authService.logout(req.user);
+  async logout(@Req() req): Promise<IApiResponse<null>> {
+    await this.authService.logout(req.user);
+
+    return ApiResponse.success<null>(null, 'logout successfully!');
+  }
+
+  @Post('refresh-access-token')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard('jwt-refresh-token'))
+  async refresh(
+    @Body('refreshToken') refreshToken: string,
+    @Req() req: any,
+  ): Promise<IApiResponse<string>> {
+    const accessToken: string = await this.authService.getAccessToken(
+      req.user,
+      refreshToken,
+    );
+    return ApiResponse.success<string>(
+      accessToken,
+      'token refresh successfully!',
+    );
   }
 }

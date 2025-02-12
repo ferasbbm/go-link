@@ -1,7 +1,7 @@
 import { TokenPayload } from 'src/common/types/global.type';
 import { JwtService } from '@nestjs/jwt';
 
-export const generateToken = async (
+export const generateAccessToken = async (
   jwtService: JwtService,
   payload: TokenPayload,
 ): Promise<string> => jwtService.signAsync(payload);

@@ -11,3 +11,15 @@ export const jwtConfig = (): DynamicModule =>
       signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') },
     }),
   });
+
+// export const refreshJwtConfig = (): DynamicModule =>
+//   JwtModule.registerAsync({
+//     imports: [ConfigModule],
+//     inject: [ConfigService],
+//     useFactory: async (configService: ConfigService) => ({
+//       secret: configService.get<string>('JWT_REFRESH_SECRET'),
+//       signOptions: {
+//         expiresIn: configService.get<string>('JWT_REFRESH_EXPIRES_IN'),
+//       },
+//     }),
+//   });

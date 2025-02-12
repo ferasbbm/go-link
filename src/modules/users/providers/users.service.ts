@@ -51,4 +51,14 @@ export class UsersService {
 
     return user;
   }
+
+  async updateRefreshToken(
+    userId: number,
+    refreshToken: string,
+  ): Promise<User> {
+    const user: User = await this.userRepo.findOneBy({ id: userId });
+    user.refreshToken = refreshToken;
+
+    return this.userRepo.save(user);
+  }
 }

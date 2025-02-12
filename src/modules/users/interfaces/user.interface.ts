@@ -8,5 +8,6 @@ export interface UserInterface {
   mobile: string;
   createdAt: Date;
   accessToken?: string;
+  refreshToken?: string;
   links: Link[];
 }

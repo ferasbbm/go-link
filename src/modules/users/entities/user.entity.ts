@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Link } from 'src/modules/links/entities/link.entity';
 import {
   Column,
@@ -30,6 +31,9 @@ export class User {
 
   @Column()
   hashedPassword: string;
+
+  @Column({ nullable: true, type: 'text' })
+  refreshToken: string;
 
   @OneToMany(() => Link, (link) => link.user)
   @JoinColumn()

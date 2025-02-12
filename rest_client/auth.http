@@ -3,7 +3,7 @@ POST    http://localhost:3000/api/auth/register
 content-type: application/json
 
 {
-    "username":"ferasbbm",
+    "username":"aswd",
     "password":"password",
     "email":"feras.bbm@gmail.com"
 }   
@@ -17,8 +17,15 @@ content-type: application/json
     "password":"password"
 }   
 
+### Refresh Access Token Request
+POST   http://localhost:3000/api/auth/refresh-access-token
+content-type: application/json
+
+{
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM5MzQ0NDAxLCJleHAiOjE3MzkzNTE2MDF9.lD352uOamoJCO_sRkV4utItsXtmgNKCu2guQEVya9dY"
+}   
+
 ### Logout Request
 POST   http://localhost:3000/api/auth/logout
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMxLCJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM4ODM5MzQ5LCJleHAiOjE3Mzg4NDI5NDl9.Uqm0AwaWCq2UP8niL1zs7cXWWTsgAEKypU_CFaDRWPg
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM5MzQ0NTE4LCJleHAiOjE3MzkzNDQ1Nzh9.TVlZLTvq6zZ-FC9Jse6DjYpj4gY199yDFcVasYgmbAg

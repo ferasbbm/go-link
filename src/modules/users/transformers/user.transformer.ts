@@ -7,7 +7,11 @@ export class UserTransformer {
    * @param link
    * @returns
    */
-  static make(user: User, token = null): UserInterface {
+  static make(
+    user: User,
+    accessToken: string = null,
+    refreshToken: string = null,
+  ): UserInterface {
     return {
       id: user.id,
       name: user.name,
@@ -15,12 +19,13 @@ export class UserTransformer {
       username: user.username,
       mobile: user.mobile,
       createdAt: user.createdAt,
-      accessToken: token,
+      accessToken,
+      refreshToken,
       links: user.links,
     };
   }
 
   static collection(users: User[]): UserInterface[] {
-    return users.map((user): UserInterface => this.make(user));
+    return users.map((user: User): UserInterface => this.make(user));
   }
 }

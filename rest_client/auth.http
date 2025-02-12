@@ -22,7 +22,7 @@ POST   http://localhost:3000/api/auth/refresh-access-token
 content-type: application/json
 
 {
-    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM5MzQ0NDAxLCJleHAiOjE3MzkzNTE2MDF9.lD352uOamoJCO_sRkV4utItsXtmgNKCu2guQEVya9dY"
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VybmFtZSI6ImZlcmFzYmJtIiwiaWF0IjoxNzM5MzUwMzIzLCJleHAiOjE3MzkzNTc1MjN9.ptKjLtWG4e4okS1fB1VilVM9wKo8N0qMHhOFTt1-CWU"
 }   
 
 ### Logout Request

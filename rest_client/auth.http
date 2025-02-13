@@ -4,8 +4,7 @@ content-type: application/json
 
 {
     "username":"aswd",
-    "password":"password",
-    "email":"feras.bbm@gmail.com"
+    "password":"password"
 }   
 
 ### Login Request

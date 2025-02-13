@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/providers/users.service';
 import { UserInterface } from '../users/interfaces/user.interface';
@@ -8,7 +12,7 @@ import { UserTransformer } from '../users/transformers/user.transformer';
 import { RegisterDto } from './dtos/register.dto';
 import { User } from '../users/entities/user.entity';
 import { generateRefreshToken } from './utils/jwtRefreshToken.util';
-import * as jwt from 'jsonwebtoken';
+import { identifyType, Tokens } from 'src/common/types/global.type';
 @Injectable({})
 export class AuthService {
   constructor(
@@ -16,7 +20,18 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
+  identifierTypes: string[] = ['username', 'email', 'mobile'];
+
   async register(registerDto: RegisterDto): Promise<UserInterface> {
+    const identifierChecks: Promise<void>[] = this.identifierTypes
+      .filter((key: identifyType): string => registerDto[key])
+      .map(
+        (key: identifyType): Promise<void> =>
+          this.checkExistingIdentifier(key, registerDto[key] as string),
+      );
+
+    await Promise.all(identifierChecks);
+
     const hashedPassword: string = await makeHash(registerDto.password);
 
     const user = await this.usersService.create({
@@ -24,10 +39,11 @@ export class AuthService {
       hashedPassword,
     });
 
-    const tokens: any = await this.generateTokens(user);
-    await this.usersService.updateRefreshToken(user.id, tokens['refreshToken']);
+    const { accessToken, refreshToken } = await this.generateTokens(user);
 
-    return UserTransformer.make(user, ...tokens);
+    await this.usersService.updateRefreshToken(user.id, refreshToken);
+
+    return UserTransformer.make(user, accessToken, refreshToken);
   }
 
   async login(username: string, pass: string): Promise<UserInterface> {
@@ -57,13 +73,27 @@ export class AuthService {
     return generateAccessToken(this.jwtService, payload);
   }
 
-  private async generateTokens(user: User): Promise<[string, string]> {
+  private async checkExistingIdentifier(
+    identifierKey: string,
+    identifierValue: string,
+  ): Promise<void> {
+    const user = await this.usersService.findByIdentifier(identifierValue);
+    if (user) {
+      throw new UnprocessableEntityException(
+        `The ${identifierKey} is already registered. Please use a different ${identifierKey}.`,
+      );
+    }
+  }
+
+  private async generateTokens(user: User): Promise<Tokens> {
     const payload = { userId: user.id, username: user.username };
 
-    return Promise.all([
+    const [accessToken, refreshToken] = await Promise.all([
       generateAccessToken(this.jwtService, payload),
       generateRefreshToken(this.jwtService, payload),
     ]);
+
+    return { accessToken, refreshToken };
   }
 
   // clcTokenExp() {

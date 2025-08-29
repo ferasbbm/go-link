@@ -21,9 +21,9 @@ export class LinksService {
    * @returns The created link as a LinkInterface.
    */
   async generateNewLink(dto: CreateLinkDto): Promise<LinkInterface> {
-    const shortUrl = await generateShortUrl();
-    const link = this.linkRepo.create({ ...dto, shortUrl });
-    const savedLink = await this.linkRepo.save(link);
+    const shortUrl: string = dto.customUrl ?? (await generateShortUrl());
+    const link: Link = this.linkRepo.create({ ...dto, shortUrl });
+    const savedLink: Link = await this.linkRepo.save(link);
 
     return LinkTransformer.make(savedLink);
   }
@@ -47,8 +47,7 @@ export class LinksService {
    * @returns The updated link as a LinkInterface.
    * @throws NotFoundException if the link is not found.
    */
-  async update(id: number, dto: UpdateLinkDto): Promise<LinkInterface> {
-    const link = await this.findOne(id);
+  async update(link: Link, dto: UpdateLinkDto): Promise<LinkInterface> {
     Object.assign(link, dto);
     const updatedLink = await this.linkRepo.save(link);
 
@@ -60,9 +59,8 @@ export class LinksService {
    * @param id - The ID of the link to delete.
    * @throws NotFoundException if the link is not found.
    */
-  async delete(id: number): Promise<void> {
-    const link = await this.findOne(id);
-    await this.linkRepo.remove(link);
+  delete(link: Link): void {
+    this.linkRepo.remove(link);
   }
 
   /**
@@ -82,7 +80,7 @@ export class LinksService {
    * @returns The Link entity.
    * @throws NotFoundException if the link is not found.
    */
-  private async findOne(id: number): Promise<Link> {
+  async findOne(id: number): Promise<Link> {
     const link = await this.linkRepo.findOne({ where: { id } });
     if (!link) throw new NotFoundException('Link not found');
 
